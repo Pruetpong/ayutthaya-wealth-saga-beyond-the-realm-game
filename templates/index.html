@@ -897,7 +897,9 @@
 
     <!-- MODAL 1: LOCATION INTERACTION (Tab-Based) -->
     <div id="modal-location" class="fixed inset-0 z-50 hidden flex items-center justify-center p-0 md:p-4"
-        style="background: rgba(62, 39, 35, 0.85); backdrop-filter: blur(4px);">
+        style="background: rgba(62, 39, 35, 0.85); backdrop-filter: blur(4px);"
+        onclick="if(event.target===this)game.closeModal('modal-location')"
+        onkeydown="if(event.key==='Escape')game.closeModal('modal-location')">
         <div class="w-full max-w-3xl h-full md:h-[85vh] md:rounded-xl flex flex-col overflow-hidden shadow-2xl animate-enter"
             style="background: linear-gradient(to bottom right, #fffaf0, #fff5e6); border: 2px solid var(--ayu-gold);">
 
@@ -1276,6 +1278,8 @@
             currentLocId: null,
             isHorathibodiMode: false,
             isProcessing: false,
+            isSending: false,
+            _chatAbortController: null,
             questEvalPassed: false,
             questEvalData: null,
 
@@ -1320,6 +1324,16 @@
                     this.renderScenarios();
                     document.getElementById('loading-screen').classList.add('hidden');
                     document.getElementById('view-selection').classList.remove('hidden');
+
+                    // ESC key: close any open modal
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key !== 'Escape') return;
+                        if (!document.getElementById('modal-location').classList.contains('hidden')) {
+                            game.closeModal('modal-location');
+                        } else if (!document.getElementById('modal-quest-hub').classList.contains('hidden')) {
+                            game.closeModal('modal-quest-hub');
+                        }
+                    });
 
                     // Real-time input validation
                     document.getElementById('invest-amount').addEventListener('input', function () {
@@ -1453,7 +1467,7 @@
             // --- Render Investment Locations Map ---
             renderMap: function () {
                 const grid = document.getElementById('locations-grid');
-                grid.innerHTML = '';
+                let html = '';
 
                 Object.entries(this.data.locations)
                     .filter(([id, loc]) => !loc.is_quest_hub)
@@ -1498,8 +1512,8 @@
                         const riskStars = riskLevel > 0 ? '⭐'.repeat(riskLevel) : '🔰';
                         const riskLabel = loc.risk_label || 'พิเศษ';
 
-                        grid.innerHTML += `
-                            <div onclick="game.openLocation(${id})" class="location-card rounded-lg p-4 relative group ${isInvestedClass} ${isLocked || isHealthLocked ? 'opacity-60' : ''}">
+                        html += `
+                            <div onclick="game.openLocation(${id})" class="location-card rounded-lg p-4 relative group ${isInvestedClass} ${(isLocked || isHealthLocked) && !hasQuestMarker ? 'opacity-60' : ''}">
 
                                 <!-- NPC Header -->
                                 <div class="flex items-start justify-between mb-2">
@@ -1542,6 +1556,7 @@
                         `;
                     });
 
+                grid.innerHTML = html;
                 this.updateFooterStats();
                 this.updateHealthStatusBanner();
             },
@@ -1677,22 +1692,46 @@
                 const npc = this.data.npcs[loc.npc_id];
                 const npcIcon = npc?.icon || 'fa-user';
 
+                // Quest Bypass: ถ้า NPC ที่ location นี้มี active quest ของ player → อนุญาตให้เข้าสนทนาได้แม้ gate ล็อค
+                const activeQuestObj = this.state.active_quest ? this.data.quests[this.state.active_quest] : null;
+                const isQuestBypass = !!(activeQuestObj && activeQuestObj.npc_id === loc.npc_id);
+
                 // Health gate check
                 const reqHealth = loc.require_health || 0;
                 const currentHp = this.state.stats.health;
-                if (reqHealth > 0 && currentHp < reqHealth) {
-                    if (currentHp < 10) {
-                        showToast(`🏥 สุขภาพวิกฤต! ไม่สามารถเข้า "${loc.name}" ได้ — รีบไปรักษาตัวที่ ศาลาพระโอสถ ก่อน`, 'error', 5000);
+                const isHealthLocked = reqHealth > 0 && currentHp < reqHealth;
+                if (isHealthLocked) {
+                    if (isQuestBypass) {
+                        showToast(
+                            currentHp < 10
+                                ? `🏥 HP วิกฤต — ลงทุนไม่ได้ แต่สนทนาและทำเควสต์ "${activeQuestObj.name}" ได้`
+                                : `⚠️ HP ไม่ถึง ${reqHealth} — ลงทุนไม่ได้ แต่สนทนาและทำเควสต์ "${activeQuestObj.name}" ได้`,
+                            'info', 4000
+                        );
+                        // ไม่ return → ให้ผ่านไปเปิด modal ต่อ
                     } else {
-                        showToast(`⚠️ ร่างกายอ่อนแอเกินไป! ต้องมี HP ≥ ${reqHealth} (ปัจจุบัน: ${currentHp})`, 'warning', 5000);
+                        if (currentHp < 10) {
+                            showToast(`🏥 สุขภาพวิกฤต! ไม่สามารถเข้า "${loc.name}" ได้ — รีบไปรักษาตัวที่ ศาลาพระโอสถ ก่อน`, 'error', 5000);
+                        } else {
+                            showToast(`⚠️ ร่างกายอ่อนแอเกินไป! ต้องมี HP ≥ ${reqHealth} (ปัจจุบัน: ${currentHp})`, 'warning', 5000);
+                        }
+                        return;
                     }
-                    return;
                 }
 
                 // Merit gate check
-                if ((loc.require_merit || 0) > 0 && this.state.stats.merit < loc.require_merit) {
-                    showToast(`ต้องมีบารมีอย่างน้อย ${loc.require_merit} จึงจะเข้าถึง ${loc.name} ได้ 🙏`, 'warning');
-                    return;
+                const isMeritLocked = (loc.require_merit || 0) > 0 && this.state.stats.merit < loc.require_merit;
+                if (isMeritLocked) {
+                    if (isQuestBypass) {
+                        showToast(
+                            `🙏 บารมีไม่ถึง ${loc.require_merit} — ลงทุนไม่ได้ แต่สนทนาและทำเควสต์ "${activeQuestObj.name}" ได้`,
+                            'info', 4000
+                        );
+                        // ไม่ return → ให้ผ่านไปเปิด modal ต่อ
+                    } else {
+                        showToast(`ต้องมีบารมีอย่างน้อย ${loc.require_merit} จึงจะเข้าถึง ${loc.name} ได้ 🙏`, 'warning');
+                        return;
+                    }
                 }
 
                 // NPC Header
@@ -1798,6 +1837,23 @@
                     }
                 }
 
+                // Quest Bypass: disable invest tab ถ้า gate ล็อคอยู่ (สนทนาได้ แต่ลงทุนไม่ได้)
+                const investTabBtn = document.querySelector('.loc-tab-btn[data-tab="invest"]');
+                if (isQuestBypass && (isHealthLocked || isMeritLocked)) {
+                    if (investTabBtn) {
+                        investTabBtn.style.opacity = '0.35';
+                        investTabBtn.style.pointerEvents = 'none';
+                        investTabBtn.title = 'ลงทุนไม่ได้ (HP หรือบารมีไม่ถึง)';
+                    }
+                } else {
+                    // Reset ในกรณีที่เคย bypass มาก่อน
+                    if (investTabBtn) {
+                        investTabBtn.style.opacity = '';
+                        investTabBtn.style.pointerEvents = '';
+                        investTabBtn.title = '';
+                    }
+                }
+
                 document.getElementById('modal-location').classList.remove('hidden');
                 this.updateModalCash();
             },
@@ -1842,8 +1898,20 @@
             closeModal: function (id) {
                 document.getElementById(id).classList.add('hidden');
                 if (id === 'modal-location') {
+                    // Cancel any ongoing chat streaming request
+                    if (this._chatAbortController) {
+                        this._chatAbortController.abort();
+                        this._chatAbortController = null;
+                    }
+                    this.isSending = false;
                     this.isHorathibodiMode = false;
-                    document.querySelectorAll('.loc-tab-btn').forEach(btn => btn.classList.remove('hidden'));
+                    document.querySelectorAll('.loc-tab-btn').forEach(btn => {
+                        btn.classList.remove('hidden');
+                        // Reset quest-bypass invest-tab disable styles
+                        btn.style.opacity = '';
+                        btn.style.pointerEvents = '';
+                        btn.title = '';
+                    });
                     document.getElementById('horathibodi-modal-chat-badge').classList.add('hidden');
                     document.getElementById('npc-modern-product').classList.add('hidden');
                     document.getElementById('chat-input').disabled = false;
@@ -1877,6 +1945,7 @@
 
             // --- Chat System ---
             sendChat: async function () {
+                if (this.isSending) return;
                 const input = document.getElementById('chat-input');
                 const msg = input.value.trim();
                 if (!msg) return;
@@ -1886,6 +1955,10 @@
                     input.value = '';
                     return;
                 }
+
+                this.isSending = true;
+                const sendBtn = document.getElementById('chat-send-btn');
+                if (sendBtn) sendBtn.disabled = true;
 
                 this.addChatBubble('user', msg);
                 input.value = '';
@@ -1912,6 +1985,9 @@
                     </div>
                 `);
 
+                if (this._chatAbortController) this._chatAbortController.abort();
+                this._chatAbortController = new AbortController();
+
                 try {
                     const response = await fetch('/api/chat', {
                         method: 'POST',
@@ -1922,7 +1998,8 @@
                             game_context: context,
                             history: this.chatHistories[npcId].slice(-12),
                             active_quest: this.state.active_quest
-                        })
+                        }),
+                        signal: this._chatAbortController.signal
                     });
 
                     const reader = response.body.getReader();
@@ -1971,7 +2048,19 @@
                         }
                     }
                 } catch (e) {
-                    npcBubble.innerText = "(ที่ปรึกษาไม่สามารถตอบได้ในขณะนี้)";
+                    if (e.name !== 'AbortError') {
+                        npcBubble.innerText = "(ที่ปรึกษาไม่สามารถตอบได้ในขณะนี้)";
+                    } else {
+                        npcBubble.remove();
+                    }
+                } finally {
+                    this.isSending = false;
+                    this._chatAbortController = null;
+                    const sendBtnFinal = document.getElementById('chat-send-btn');
+                    if (sendBtnFinal) {
+                        const isHorathibodiLimited = this.isHorathibodiMode && this.state.horathibodi_chat_count >= 3;
+                        if (!isHorathibodiLimited) sendBtnFinal.disabled = false;
+                    }
                 }
             },
 
@@ -2006,6 +2095,10 @@
                         this.closeModal('modal-quest-hub');
                         this.renderQuestHub();
                         showToast(data.message, 'success', 5000);
+                        // Auto-navigate ไปยัง NPC Location ของเควสต์ที่รับ
+                        if (quest && quest.location_id) {
+                            setTimeout(() => { this.openLocation(quest.location_id); }, 600);
+                        }
                     } else {
                         showToast(data.detail || 'ไม่สามารถรับเควสต์ได้', 'error', 5000);
                     }
@@ -2093,11 +2186,11 @@
             },
 
             setInvestPreset: function (type) {
+                const investedHere = this.currentInvestments[this.currentLocId] || 0;
                 const totalOther = Object.entries(this.currentInvestments)
                     .filter(([k]) => k != this.currentLocId)
                     .reduce((a, [k, v]) => a + v, 0);
-                const investedHere = this.currentInvestments[this.currentLocId] || 0;
-                const realAvailable = this.state.stats.wealth - (totalOther);
+                const realAvailable = this.state.stats.wealth - totalOther;
                 const loc = this.data.locations[this.currentLocId];
                 const minInvest = loc.min_invest || 0;
                 let amount = 0;
@@ -2134,6 +2227,13 @@
                 const totalOther = Object.entries(this.currentInvestments)
                     .filter(([k]) => k != this.currentLocId)
                     .reduce((a, [k, v]) => a + v, 0);
+
+                // Health gate check (ให้ feedback ทันทีก่อนถึง end-turn)
+                const reqHealthC = loc.require_health || 0;
+                if (val > 0 && reqHealthC > 0 && this.state.stats.health < reqHealthC) {
+                    showToast(`${loc.name} ต้องมี HP ≥ ${reqHealthC} จึงจะลงทุนได้ (HP ปัจจุบัน: ${this.state.stats.health})`, 'warning', 5000);
+                    return;
+                }
 
                 if (totalOther + val > this.state.stats.wealth) {
                     showToast('เงินไม่พอ! กรุณาลดจำนวนเงินลงทุน', 'error');
@@ -2229,7 +2329,7 @@
                 } else if (status === "overwork") {
                     banner.className = 'mx-2 mb-3 px-4 py-2.5 rounded-lg text-sm font-bold text-center';
                     banner.style.cssText = 'background: rgba(180,83,9,0.10); color: #b45309; border: 1.5px solid rgba(180,83,9,0.30);';
-                    banner.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>⚠️ ร่างกายอ่อนแอ — ลงทุนได้เฉพาะ พระคลัง / SSF-RMF / ตราสารหนี้ / กองทุนผสม / วัดป่าแก้ว';
+                    banner.innerHTML = '<i class="fas fa-exclamation-triangle mr-2"></i>⚠️ ร่างกายอ่อนแอ — ลงทุนได้เฉพาะ พระคลัง / ThaiESG-RMF / ตราสารหนี้ / กองทุนผสม / วัดป่าแก้ว';
                     banner.classList.remove('hidden');
                 } else {
                     banner.classList.add('hidden');
