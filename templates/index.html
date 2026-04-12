@@ -17,6 +17,7 @@
     <style>
         /* ========== Royal Ayutthaya + Modern Finance Color System ========== */
         :root {
+            /* Ayutthaya Base — คงเดิมทั้งหมด */
             --ayu-red: #4a0404;
             --ayu-red-light: #6b1010;
             --ayu-gold: #d4af37;
@@ -25,6 +26,8 @@
             --ayu-brown: #3e2723;
             --ayu-cream: #fdfbf7;
             --text-main: var(--ayu-brown);
+
+            /* Modern Finance Accents — ใหม่ใน Beyond the Realm */
             --inv-blue: #1a56db;
             --inv-blue-light: #e8f0fe;
             --inv-green: #059669;
@@ -142,9 +145,9 @@
         .location-card {
             background: rgba(255, 255, 255, 0.9);
             border: 1px solid var(--ayu-gold);
+            transition: all 0.3s;
             cursor: pointer;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s, border-color 0.3s !important;
         }
 
         .location-card:hover {
@@ -160,14 +163,14 @@
             box-shadow: 0 0 10px rgba(5, 150, 105, 0.15);
         }
 
-        /* Modern Product Badge */
+        /* NEW: Modern Product Badge */
         .modern-product-badge {
             display: flex;
             align-items: center;
             gap: 0.3rem;
             padding: 0.2rem 0.5rem;
             border-radius: 0.375rem;
-            font-size: 0.68rem;
+            font-size: 0.8rem;
             font-weight: 600;
             background: var(--inv-blue-light);
             color: var(--inv-blue);
@@ -232,6 +235,10 @@
             animation: fade-in-up 0.5s ease-out forwards;
         }
 
+        .pulse-gold {
+            animation: pulse-gold 2s infinite;
+        }
+
         @keyframes pulse-gold {
             0% {
                 box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
@@ -244,10 +251,6 @@
             100% {
                 box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
             }
-        }
-
-        .pulse-gold {
-            animation: pulse-gold 2s infinite;
         }
 
         /* Typing Indicator */
@@ -339,6 +342,11 @@
             100% {
                 box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
             }
+        }
+
+        /* 3D Card Hover */
+        .location-card {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s, border-color 0.3s !important;
         }
 
         /* Chat Styles */
@@ -476,12 +484,12 @@
             display: flex;
         }
 
+        /* Responsive Fixes */
         #modal-location .loc-panel {
             flex: 1;
             min-height: 0;
         }
 
-        /* Responsive Fixes */
         @media (max-width: 767px) {
             #modal-location>div {
                 height: 100vh;
@@ -704,6 +712,7 @@
     <div id="loading-screen" class="fixed inset-0 z-[60] flex flex-col items-center justify-center text-center"
         style="background: linear-gradient(to bottom right, #fffaf0, var(--ayu-cream));">
         <div class="w-16 h-16 border-4 border-yellow-200 border-t-yellow-600 rounded-full animate-spin mb-4"></div>
+        <!-- CHANGE: loading text -->
         <h2 class="text-xl ancient-font animate-pulse" style="color: var(--ayu-red);">กำลังเตรียมพอร์ตการลงทุน...</h2>
     </div>
 
@@ -711,19 +720,23 @@
     <div id="view-selection" class="fixed inset-0 z-50 overflow-y-auto hidden"
         style="background: var(--ayu-cream); background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><path d=%22M14 16H9v-2h5V9.87a4 4 0 1 1 2 0V14h5v2h-5v15.95A10 10 0 0 0 23.66 27l-3.46-2 8.2-2.2-2.9 5a12 12 0 0 1-21 0l-2.89-5 8.2 2.2-3.47 2A10 10 0 0 0 14 31.95V16zm40 40h-5v-2h5v-4.13a4 4 0 1 1 2 0V54h5v2h-5v15.95A10 10 0 0 0 63.66 67l-3.47-2 8.2-2.2-2.88 5a12 12 0 0 1-21.02 0l-2.88-5 8.2 2.2-3.47 2A10 10 0 0 0 54 71.95V56zm-39 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm40-40a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM15 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm40 40a2 2 0 1 0 0-4 2 2 0 0 0 0 4z%22 fill=%22rgba(212,175,55,0.08)%22 fill-rule=%22evenodd%22/></svg>'); background-size: 80px 80px;">
         <div class="min-h-full flex flex-col items-center justify-center p-4 sm:p-6">
+            <!-- Title Section -->
             <div class="text-center mb-6 sm:mb-10 animate-enter">
                 <i class="fas fa-vihara text-4xl sm:text-6xl mb-3 sm:mb-4 drop-shadow-lg"
                     style="color: var(--ayu-gold);"></i>
                 <h1 class="text-2xl sm:text-4xl md:text-5xl font-bold ancient-font mb-1" style="color: var(--ayu-red);">
                     Ayutthaya Wealth Saga</h1>
+                <!-- CHANGE: subtitle for Beyond the Realm -->
                 <p class="text-xl sm:text-3xl opacity-90 ancient-font"
                     style="color: var(--ayu-gold-dim); margin-top: 0.5rem;">Beyond the Realm</p>
                 <p class="text-lg mt-1" style="color: var(--inv-blue);">
-                    <i class="fas fa-clock-rotate-left mr-1"></i>นักการเงินจากอยุธยาข้ามเวลามาสอนการลงทุนยุค 2026
+                    <i class="fas fa-clock-rotate-left mr-1"></i>เซียนการเงินจากอยุธยาข้ามเวลามาสอนการลงทุนยุค 2026
                 </p>
                 <div class="w-32 h-1 mx-auto mt-4"
                     style="background: linear-gradient(to right, transparent, var(--ayu-gold), transparent);"></div>
             </div>
+
+            <!-- Scenario Cards — rendered by JS -->
             <div class="w-full max-w-7xl" id="scenario-container"></div>
         </div>
     </div>
@@ -735,6 +748,8 @@
         <header style="background-color: var(--ayu-red); border-bottom: 4px solid var(--ayu-gold); padding: 1rem;"
             class="text-yellow-50 p-3 shadow-lg z-30">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+
+                <!-- Left: Title & Round -->
                 <div class="flex items-center gap-4 w-full md:w-auto">
                     <div class="w-12 h-12 rounded flex items-center justify-center shadow-inner"
                         style="background-color: var(--ayu-gold); color: var(--ayu-red);">
@@ -743,6 +758,7 @@
                     <div>
                         <h1 class="text-xl font-bold ancient-font leading-none"
                             style="color: var(--ayu-gold); margin-bottom: 0.5rem;">Ayutthaya Wealth Saga</h1>
+                        <!-- CHANGE: ไตรมาสที่ -->
                         <div class="text-base text-yellow-200 mt-1">
                             ไตรมาสที่ <span id="round-display"
                                 class="text-white font-bold text-base mx-1">1</span>/<span
@@ -752,8 +768,11 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Right: Player Stats -->
                 <div class="flex gap-2 sm:gap-2 md:gap-6 px-2 sm:px-4 py-2 rounded-lg border w-full md:w-auto justify-around overflow-hidden"
                     style="background: rgba(0,0,0,0.3); border-color: rgba(212,175,55,0.4);">
+                    <!-- ทรัพย์สิน -->
                     <div class="flex items-center gap-1 sm:gap-2 group min-w-0">
                         <i class="fas fa-coins opacity-80 text-base sm:text-xl md:text-2xl"
                             style="color: var(--ayu-gold);"></i>
@@ -764,6 +783,7 @@
                         </div>
                     </div>
                     <div class="w-px" style="background: rgba(212,175,55,0.3);"></div>
+                    <!-- ปัญญา -->
                     <div class="flex items-center gap-1 sm:gap-2 group min-w-0 cursor-help"
                         title="ปัญญา: ช่วยให้เข้าใจข่าวเศรษฐกิจ">
                         <i class="fas fa-brain text-blue-900 opacity-80 text-base sm:text-xl md:text-2xl"></i>
@@ -773,6 +793,7 @@
                         </div>
                     </div>
                     <div class="w-px" style="background: rgba(212,175,55,0.3);"></div>
+                    <!-- บารมี -->
                     <div class="flex items-center gap-1 sm:gap-2 group min-w-0 cursor-help"
                         title="บารมี: Emergency Fund Safety Net">
                         <i class="fas fa-hands-praying text-orange-900 opacity-80 text-base sm:text-xl md:text-2xl"></i>
@@ -782,6 +803,7 @@
                         </div>
                     </div>
                     <div class="w-px" style="background: rgba(212,175,55,0.3);"></div>
+                    <!-- สุขภาพ -->
                     <div class="flex items-center gap-1 sm:gap-2 group min-w-0 cursor-help"
                         title="สุขภาพ: Human Capital">
                         <i class="fas fa-heart text-green-900 opacity-80 text-base sm:text-xl md:text-2xl"></i>
@@ -803,8 +825,10 @@
                 <div id="rumor-banner"
                     class="glass-panel p-3 sm:p-6 mb-4 sm:mb-6 relative overflow-y-auto animate-enter"
                     style="border-left: 4px solid var(--inv-blue);">
+
                     <div class="mb-3">
                         <div class="flex items-center gap-2 mb-1">
+                            <!-- CHANGE: ข่าวเศรษฐกิจประจำไตรมาส -->
                             <h3 class="font-bold ancient-font text-base sm:text-lg"
                                 style="color: var(--ayu-red); margin: 0;">
                                 🗞️ ข่าวเศรษฐกิจประจำไตรมาส
@@ -820,8 +844,10 @@
                         <div id="wisdom-hints" class="hidden mt-2 pt-2 space-y-1"
                             style="border-top: 1px solid rgba(212,175,55,0.3);"></div>
                     </div>
+
                     <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-3 pt-3"
                         style="border-top: 1px solid rgba(212,175,55,0.3);">
+                        <!-- ปุ่มสนทนา -->
                         <button id="btn-horathibodi-chat" onclick="game.openHorathibodiChat()"
                             class="flex-1 py-2.5 px-4 rounded-lg font-bold text-sm sm:text-base transition-all hover:shadow-md flex items-center justify-center gap-2"
                             style="background: rgba(26,86,219,0.08); border: 1px solid rgba(26,86,219,0.2); color: var(--inv-blue);">
@@ -831,6 +857,7 @@
                                 class="ml-1 text-xs opacity-70 bg-white px-1.5 py-0.5 rounded border border-blue-100">(เหลือ
                                 3/3)</span>
                         </button>
+                        <!-- ปุ่มเควสต์ -->
                         <button id="btn-quest-hub" onclick="game.openQuestHubModal()"
                             class="flex-1 py-2.5 px-4 rounded-lg font-bold text-sm sm:text-base transition-all hover:shadow-md flex items-center justify-center gap-2"
                             style="background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2); color: #7c3aed;">
@@ -875,6 +902,7 @@
                             style="border-color: rgba(212,175,55,0.4);">
                             ล้างกระดาน <i class="fas fa-undo-alt ml-1"></i>
                         </button>
+                        <!-- CHANGE: สิ้นไตรมาส -->
                         <button onclick="game.endTurn()"
                             class="flex-1 md:flex-none btn-gold px-4 sm:px-8 py-2 sm:py-3 rounded text-sm sm:text-lg font-bold">
                             สิ้นไตรมาส (รับผลตอบแทน) <i class="fas fa-chevron-circle-right ml-2"></i>
@@ -886,13 +914,10 @@
     </div>
 
     <!-- MODAL 1: LOCATION INTERACTION -->
-    <!-- Fix A: backdrop click closes modal (event.target===this guards inner div clicks) -->
     <div id="modal-location" class="fixed inset-0 z-50 hidden flex items-center justify-center p-0 md:p-4"
-        style="background: rgba(62,39,35,0.85); backdrop-filter: blur(4px);"
-        onclick="if(event.target===this)game.closeModal('modal-location')">
+        style="background: rgba(62,39,35,0.85); backdrop-filter: blur(4px);">
         <div class="w-full max-w-3xl h-full md:h-[85vh] md:rounded-xl flex flex-col overflow-hidden shadow-2xl animate-enter"
-            style="background: linear-gradient(to bottom right, #fffaf0, #fff5e6); border: 2px solid var(--ayu-gold);"
-            onclick="event.stopPropagation()">
+            style="background: linear-gradient(to bottom right, #fffaf0, #fff5e6); border: 2px solid var(--ayu-gold);">
 
             <!-- NPC Header -->
             <div class="shrink-0 p-3 sm:p-4 flex flex-col gap-1.5"
@@ -904,7 +929,7 @@
                     <div class="flex-1 min-w-0">
                         <h3 id="npc-name" class="font-bold ancient-font text-base sm:text-lg truncate"
                             style="color: var(--ayu-red);">NPC Name</h3>
-                        <p id="npc-role" class="text-xs truncate" style="color: var(--ayu-gold-dim);">Role</p>
+                        <p id="npc-role" class="text-sm truncate" style="color: var(--ayu-gold-dim);">Role</p>
                     </div>
                     <div id="horathibodi-modal-chat-badge"
                         class="hidden text-xs px-2 py-1 rounded bg-white border border-blue-200 text-blue-800 font-bold mr-2">
@@ -916,7 +941,7 @@
                         <i class="fas fa-times text-lg"></i>
                     </button>
                 </div>
-                <div id="npc-philosophy" class="text-xs italic hidden"
+                <div id="npc-philosophy" class="text-sm italic hidden"
                     style="color: var(--ayu-gold-dim); padding-left: 3.25rem;"></div>
             </div>
 
@@ -939,7 +964,8 @@
                 <!-- Panel 1: Chat -->
                 <div id="panel-chat" class="loc-panel is-active flex-1" style="background: rgba(255,250,240,0.95);">
                     <div id="chat-history" class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3"
-                        style="background: var(--ayu-cream);"></div>
+                        style="background: var(--ayu-cream);">
+                    </div>
                     <div class="shrink-0 p-2.5 sm:p-3 flex gap-2"
                         style="background: rgba(255,250,240,0.95); border-top: 1px solid rgba(212,175,55,0.3);">
                         <input type="text" id="chat-input" placeholder="สนทนากับ NPC ..."
@@ -961,8 +987,9 @@
                         <div class="mb-4 sm:mb-6">
                             <h3 class="text-lg sm:text-xl font-bold mb-2 pb-2 ancient-font"
                                 style="color: var(--ayu-red); border-bottom: 2px solid var(--ayu-gold);">การลงทุน</h3>
-                            <p id="loc-desc" class="text-sm italic mb-4 narrative-text"
+                            <p id="loc-desc" class="text-sm mb-4 narrative-text"
                                 style="color: var(--ayu-gold-dim);">Description...</p>
+
                             <div id="investment-ui">
                                 <label class="block text-sm font-bold uppercase mb-2"
                                     style="color: var(--ayu-red);">จำนวนเงินลงทุน (บาท)</label>
@@ -992,6 +1019,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="mt-auto p-4 rounded"
                             style="background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.4);">
                             <div class="flex justify-between text-sm mb-2">
@@ -999,6 +1027,7 @@
                                 <span id="modal-cash" class="font-bold" style="color: var(--ayu-brown);">100,000 <span
                                         class="text-xs">บาท</span></span>
                             </div>
+                            <!-- CHANGE: ยืนยันการลงทุน -->
                             <button onclick="game.confirmInvestment()"
                                 class="w-full btn-gold py-3 rounded font-bold shadow-lg">
                                 ยืนยันการลงทุน
@@ -1016,8 +1045,9 @@
                             <h3 class="font-bold ancient-font" style="color: #7c3aed;">
                                 <i class="fas fa-scroll mr-2"></i>เควสต์: <span id="quest-tab-name"></span>
                             </h3>
-                            <p class="text-sm mt-1" style="color: var(--ayu-gold-dim);">หัวข้อ: <span
-                                    id="quest-tab-topic"></span></p>
+                            <p class="text-sm mt-1" style="color: var(--ayu-gold-dim);">
+                                หัวข้อ: <span id="quest-tab-topic"></span>
+                            </p>
                         </div>
                         <div class="mb-4">
                             <div class="flex justify-between text-sm mb-1">
@@ -1087,6 +1117,7 @@
                     <p id="res-desc" class="font-serif italic leading-relaxed narrative-text"
                         style="color: var(--ayu-brown);">Narrative...</p>
                 </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     <div id="res-investment-container" class="p-4 rounded reveal-step"
                         style="background: rgba(255,255,255,0.7); border: 1px solid rgba(212,175,55,0.3);">
@@ -1101,6 +1132,7 @@
                         <div id="res-item-effects" class="mt-3 pt-3 hidden"
                             style="border-top: 1px solid rgba(212,175,55,0.3);"></div>
                     </div>
+
                     <div class="p-3 sm:p-4 rounded flex flex-col justify-center text-center reveal-step"
                         style="background: rgba(255,255,255,0.7); border: 1px solid rgba(212,175,55,0.3);">
                         <h4 class="text-xs uppercase mb-3 sm:mb-4" style="color: var(--ayu-gold-dim);">สถานะปัจจุบัน
@@ -1127,6 +1159,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- CHANGE: ก้าวสู่ไตรมาสถัดไป -->
                 <button onclick="game.nextRound()" class="w-full btn-gold py-3 rounded font-bold text-lg">
                     ก้าวสู่ไตรมาสถัดไป <i class="fas fa-arrow-right ml-2"></i>
                 </button>
@@ -1142,12 +1176,14 @@
             <div id="end-rank-badge" class="mb-4 sm:mb-6">
                 <i id="end-rank-icon" class="fas fa-crown text-4xl sm:text-6xl mb-2 sm:mb-3 drop-shadow-lg"
                     style="color: var(--ayu-gold);"></i>
+                <!-- CHANGE: สิ้นสุดการเดินทางของนักลงทุน -->
                 <h2 class="text-2xl sm:text-4xl font-bold ancient-font mb-1" style="color: var(--ayu-red);">
                     สิ้นสุดการเดินทางของนักลงทุน</h2>
                 <h3 id="end-rank-name" class="text-xl sm:text-3xl font-bold ancient-font mb-1"
                     style="color: var(--ayu-gold);"></h3>
                 <p id="end-rank-desc" class="text-sm mb-4" style="color: var(--ayu-gold-dim);"></p>
             </div>
+
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8 max-w-lg mx-auto">
                 <div class="p-3 rounded text-center"
                     style="background: rgba(255,255,255,0.8); border: 1px solid var(--ayu-gold);">
@@ -1170,10 +1206,13 @@
                     <div class="text-xs" style="color: var(--ayu-gold-dim);">สุขภาพ</div>
                 </div>
             </div>
+
             <div id="end-quest-summary" class="p-4 rounded-xl text-left mb-4"
                 style="background: rgba(139,92,246,0.05); border: 1px solid rgba(139,92,246,0.2);"></div>
+
             <div class="p-6 rounded-xl text-left mb-8"
                 style="background: rgba(255,255,255,0.7); border: 2px solid var(--ayu-gold);">
+                <!-- CHANGE: บทวิเคราะห์จากพระโหราธิบดี -->
                 <h3 class="text-xl font-bold mb-4 flex items-center ancient-font"
                     style="color: var(--ayu-red); border-bottom: 2px solid var(--ayu-gold); padding-bottom: 0.75rem;">
                     <i class="fas fa-scroll mr-3" style="color: var(--ayu-gold);"></i> บทวิเคราะห์จากพระโหราธิบดี
@@ -1186,6 +1225,7 @@
                     </div>
                 </div>
             </div>
+
             <button onclick="location.reload()" class="btn-gold px-8 py-3 rounded-lg text-lg font-bold shadow-lg">
                 <i class="fas fa-redo mr-2"></i>เล่นใหม่อีกครั้ง
             </button>
@@ -1244,6 +1284,7 @@
             currentLocId: null,
             isHorathibodiMode: false,
             isProcessing: false,
+            // NEW v4.0 state
             isSending: false,
             _chatAbortController: null,
             questEvalPassed: false,
@@ -1306,7 +1347,7 @@
                         }
                     });
 
-                    // ESC key closes active modal
+                    // NEW v4.0: ESC key close modal
                     document.addEventListener('keydown', (e) => {
                         if (e.key !== 'Escape') return;
                         const locModal = document.getElementById('modal-location');
@@ -1321,7 +1362,8 @@
                 }
             },
 
-            // --- Scenario Selection ---
+            // --- View 1: Scenario Selection ---
+            // CHANGE: Beginner/Normal sections + narrative_arc
             renderScenarios: function () {
                 const container = document.getElementById('scenario-container');
                 const beginner = this.data.scenarios.filter(s => s.mode === 'beginner');
@@ -1353,11 +1395,13 @@
                             ${beginner.map(renderCard).join('')}
                         </div>
                     </div>
+
                     <div class="flex items-center gap-4 my-6">
                         <div class="flex-1 h-px" style="background: rgba(212,175,55,0.3);"></div>
                         <i class="fas fa-chart-line text-xl" style="color: var(--ayu-gold-dim);"></i>
                         <div class="flex-1 h-px" style="background: rgba(212,175,55,0.3);"></div>
                     </div>
+
                     <div class="mb-6">
                         <div class="flex items-center gap-3 mb-2">
                             <i class="fas fa-crown text-2xl" style="color: var(--ayu-gold);"></i>
@@ -1378,7 +1422,8 @@
                 this.state.scenario_id = scenarioId;
                 const scenario = this.data.scenarios.find(s => s.id === scenarioId);
                 this.state.max_rounds = scenario.max_rounds || 5;
-                this.data.wisdomGate = scenario.mode === 'beginner' ? this.data.wisdomGateBeginner : this.data.wisdomGateNormal;
+                this.data.wisdomGate = scenario.mode === 'beginner'
+                    ? this.data.wisdomGateBeginner : this.data.wisdomGateNormal;
 
                 document.getElementById('view-selection').classList.add('hidden');
                 document.getElementById('view-game').classList.remove('hidden');
@@ -1392,7 +1437,7 @@
                 await this.fetchNews();
             },
 
-            // --- Fetch News ---
+            // --- Fetch News (ข่าวเศรษฐกิจ) ---
             fetchNews: async function () {
                 try {
                     const res = await fetch('/api/news', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(this.state) });
@@ -1403,22 +1448,28 @@
                     setTimeout(() => {
                         rumorEl.innerText = `"${data.rumor}"`;
                         rumorEl.style.opacity = 1;
+                        // CHANGE: updated hint labels for investment context
                         let hintsHTML = '';
-                        if (data.hint) hintsHTML += `<div class="text-sm" style="color: var(--inv-blue);"><i class="fas fa-chart-bar mr-1"></i> 📊 สัญญาณตลาด: ${data.hint}</div>`;
-                        if (data.hint2) hintsHTML += `<div class="text-sm" style="color: var(--ayu-gold-dim);"><i class="fas fa-magnifying-glass-chart mr-1"></i> 💡 วิเคราะห์เชิงลึก: ${data.hint2}</div>`;
-                        if (data.insight) hintsHTML += `<div class="text-sm font-bold" style="color: #065f46;"><i class="fas fa-lightbulb mr-1" style="color: var(--ayu-gold);"></i> 🎯 ${data.insight}</div>`;
+                        if (data.hint) {
+                            hintsHTML += `<div class="text-sm" style="color: var(--inv-blue);"><i class="fas fa-chart-bar mr-1"></i> 📊 สัญญาณตลาด: ${data.hint}</div>`;
+                        }
+                        if (data.hint2) {
+                            hintsHTML += `<div class="text-sm" style="color: var(--ayu-gold-dim);"><i class="fas fa-magnifying-glass-chart mr-1"></i> 💡 วิเคราะห์เชิงลึก: ${data.hint2}</div>`;
+                        }
+                        if (data.insight) {
+                            hintsHTML += `<div class="text-sm font-bold" style="color: #065f46;"><i class="fas fa-lightbulb mr-1" style="color: var(--ayu-gold);"></i> 🎯 ${data.insight}</div>`;
+                        }
                         if (hintsHTML) { hintsEl.innerHTML = hintsHTML; hintsEl.classList.remove('hidden'); }
                         else { hintsEl.classList.add('hidden'); }
                     }, 300);
                 } catch (e) { console.error(e); }
             },
 
-            // --- Render Map ---
-            // FIX: ใช้ cards array แล้ว join ครั้งเดียว แทน innerHTML += ใน loop
-            // เพื่อป้องกัน browser serialize/deserialize DOM ซ้ำในทุก iteration
+            // --- Render Map (Location Grid) ---
+            // CHANGE: + modern_product badge, risk stars, return range, บาท
             renderMap: function () {
                 const grid = document.getElementById('locations-grid');
-                const cards = [];
+                grid.innerHTML = '';
 
                 Object.entries(this.data.locations)
                     .filter(([id, loc]) => !loc.is_quest_hub)
@@ -1429,9 +1480,7 @@
 
                         // Merit gate
                         const isLocked = (loc.require_merit || 0) > 0 && this.state.stats.merit < loc.require_merit;
-                        const lockBadge = isLocked
-                            ? `<span class="text-xs px-1.5 py-0.5 rounded" style="background: rgba(239,68,68,0.1); color: #dc2626; border: 1px solid rgba(239,68,68,0.3);"><i class="fas fa-lock mr-1"></i>บารมี ${loc.require_merit}+</span>`
-                            : '';
+                        const lockBadge = isLocked ? `<span class="text-xs px-1.5 py-0.5 rounded" style="background: rgba(239,68,68,0.1); color: #dc2626; border: 1px solid rgba(239,68,68,0.3);"><i class="fas fa-lock mr-1"></i>บารมี ${loc.require_merit}+</span>` : '';
 
                         // Health gate
                         const reqHealth = loc.require_health || 0;
@@ -1448,32 +1497,30 @@
                         const hasQuestMarker = activeQuest && activeQuest.npc_id === loc.npc_id;
                         const questMarker = hasQuestMarker ? `<span class="text-yellow-500 text-lg" title="เควสต์ที่นี่!"><i class="fas fa-star"></i></span>` : '';
                         const completedQuest = Object.values(this.data.quests).find(q => q.npc_id === loc.npc_id && this.state.completed_quests.includes(q.id));
-                        const completedMarker = completedQuest
-                            ? `<span class="text-green-600 text-sm" title="เควสต์ '${completedQuest.name}' สำเร็จแล้ว"><i class="fas fa-check-circle"></i></span>`
-                            : '';
+                        const completedMarker = completedQuest ? `<span class="text-green-600 text-sm" title="เควสต์ '${completedQuest.name}' สำเร็จแล้ว"><i class="fas fa-check-circle"></i></span>` : '';
 
                         // HP cost
                         const hpCost = loc.hp_cost || 0;
                         const hpColor = hpCost > 0 ? 'color: #059669' : hpCost <= -8 ? 'color: #dc2626' : 'color: #d97706';
                         const hpLabel = hpCost > 0 ? `+${hpCost} HP` : `${hpCost} HP`;
 
-                        // Modern Product Badge
+                        // NEW: Modern Product Badge
                         const modernProductBadge = loc.modern_product
-                            ? `<div class="modern-product-badge"><i class="fas fa-chart-line" style="font-size: 0.6rem; flex-shrink: 0;"></i><span>${loc.modern_product}</span></div>`
+                            ? `<div class="modern-product-badge"><i class="fas fa-chart-line" style="font-size: 0.8rem; flex-shrink: 0;"></i><span>${loc.modern_product}</span></div>`
                             : '';
 
-                        // Risk Stars
+                        // NEW: Risk Stars
                         const riskLevel = loc.risk_level || 0;
                         const riskLabel = loc.risk_label || '';
                         const riskStars = riskLevel > 0 ? '⭐'.repeat(riskLevel) : '🔰';
-                        const riskInfo = `<span class="text-xs">${riskStars}</span><span class="text-xs ml-1" style="color: var(--ayu-gold-dim);">${riskLabel}</span>`;
+                        const riskInfo = `<span class="text-xs">${riskStars}</span><span class="text-sm ml-1" style="color: var(--ayu-gold-dim);">${riskLabel}</span>`;
 
-                        // Return Range
+                        // NEW: Return Range
                         const returnRangeHtml = loc.return_range
                             ? `<span class="text-xs" style="color: var(--ayu-gold-dim);">ผลตอบแทน: ${loc.return_range}</span>`
                             : '';
 
-                        cards.push(`
+                        grid.innerHTML += `
                             <div onclick="game.openLocation(${id})" class="location-card rounded-lg p-3 sm:p-4 relative group ${invested > 0 ? 'invested' : ''} ${isLocked || isHealthLocked ? 'opacity-60' : ''}">
                                 <div class="flex items-start justify-between mb-1.5">
                                     <div class="flex items-center gap-2.5">
@@ -1483,27 +1530,27 @@
                                         </div>
                                         <div class="min-w-0">
                                             <h4 class="text-sm sm:text-base font-bold leading-tight" style="color: var(--ayu-brown);">${loc.name}</h4>
-                                            <div class="text-xs truncate" style="color: var(--ayu-gold-dim);">${npc?.name || ''}</div>
+                                            <div class="text-sm truncate" style="color: var(--ayu-gold-dim);">${npc?.name || ''}</div>
                                         </div>
                                     </div>
-                                    ${invested > 0 ? `<div class="shrink-0 text-xs sm:text-sm px-2 py-1 rounded font-mono font-bold" style="background: rgba(5,150,105,0.1); color: var(--inv-green); border: 1px solid rgba(5,150,105,0.3);">${invested.toLocaleString()}</div>` : ''}
+                                    ${invested > 0 ? `<div class="shrink-0 text-sm sm:text-sm px-2 py-1 rounded font-mono font-bold" style="background: rgba(5,150,105,0.1); color: var(--inv-green); border: 1px solid rgba(5,150,105,0.3);">${invested.toLocaleString()}</div>` : ''}
                                 </div>
+
                                 ${modernProductBadge}
-                                <p class="text-xs line-clamp-1 mb-1.5" style="color: var(--ayu-gold-dim);">${loc.desc}</p>
+                                <p class="text-sm line-clamp-3 mb-1.5" style="color: var(--ayu-gold-dim);">${loc.desc}</p>
+
                                 <div class="flex items-center gap-1.5 flex-wrap mb-1.5">
                                     ${riskInfo}
-                                    ${loc.return_range ? `<span class="opacity-30 text-xs">|</span>${returnRangeHtml}` : ''}
+                                    ${loc.return_range ? `<span class="opacity-30 text-xs"><br></span>${returnRangeHtml}` : ''}
                                 </div>
-                                <div class="flex items-center gap-2 flex-wrap text-xs">
+
+                                <div class="flex items-center gap-2 flex-wrap text-sm">
                                     <span style="${hpColor}"><i class="fas fa-heart mr-0.5"></i>${hpLabel}</span>
                                     <span style="color: var(--ayu-gold-dim);">ขั้นต่ำ: ${(loc.min_invest || 0).toLocaleString()} บาท</span>
                                     ${lockBadge}${healthLockBadge}${completedMarker}
                                 </div>
-                            </div>`);
+                            </div>`;
                     });
-
-                // Set innerHTML once — prevents serialize/deserialize loop that corrupts click handlers
-                grid.innerHTML = cards.join('');
 
                 this.updateFooterStats();
                 this.updateHealthStatusBanner();
@@ -1571,6 +1618,7 @@
                         statusText = 'ไม่พร้อม (ติดเควสต์อื่น)'; statusClass = 'text-gray-400 bg-gray-50 border-gray-200';
                     } else {
                         statusText = '✨ พร้อมรับภารกิจ'; statusClass = 'text-purple-600 bg-purple-50 border-purple-200';
+                        // CHANGE: 500 บาท
                         actionHtml = `<button onclick="game.acceptQuest('${q.id}')" class="px-3 py-1.5 rounded text-white text-xs font-bold shadow hover:bg-purple-700 transition" style="background: #7c3aed;">รับเควสต์ (500 บาท)</button>`;
                     }
 
@@ -1606,31 +1654,42 @@
             },
 
             // --- Open Location Modal ---
-            // Hard Gate: ถ้าไม่ผ่าน gate → showToast + return ทันที ไม่มี bypass ใดๆ
+            // CHANGE: Quest Bypass + invest tab disabling
             openLocation: function (id) {
                 this.currentLocId = id;
                 const loc = this.data.locations[id];
                 const npc = this.data.npcs[loc.npc_id];
                 const npcIcon = npc?.icon || 'fa-user';
 
-                // Hard Gate 1: Health check (ตรวจก่อน merit เสมอ)
+                // Gate checks
                 const reqHealth = loc.require_health || 0;
                 const currentHp = this.state.stats.health;
                 const isHealthLocked = reqHealth > 0 && currentHp < reqHealth;
-                if (isHealthLocked) {
-                    if (currentHp < 10) showToast(`🏥 สุขภาพวิกฤต! ไม่สามารถเข้า "${loc.name}" ได้ — รีบไปรักษาตัวที่ ศาลาพระโอสถ ก่อน`, 'error', 5000);
-                    else showToast(`⚠️ ร่างกายอ่อนแอ! ต้องมี HP ≥ ${reqHealth} (ปัจจุบัน: ${currentHp})`, 'warning', 5000);
-                    return;
-                }
-
-                // Hard Gate 2: Merit check
                 const isMeritLocked = (loc.require_merit || 0) > 0 && this.state.stats.merit < loc.require_merit;
-                if (isMeritLocked) {
-                    showToast(`ต้องมีบารมีอย่างน้อย ${loc.require_merit} จึงจะเข้าถึง ${loc.name} ได้ 🙏`, 'warning');
-                    return;
+
+                // NEW v4.0: Quest Bypass
+                const activeQuestObj = this.state.active_quest ? this.data.quests[this.state.active_quest] : null;
+                const isQuestBypass = !!(activeQuestObj && activeQuestObj.npc_id === loc.npc_id);
+
+                if (isHealthLocked || isMeritLocked) {
+                    if (isQuestBypass) {
+                        const lockReason = isHealthLocked
+                            ? (currentHp < 10 ? '🏥 สุขภาพวิกฤต' : '⚠️ ร่างกายอ่อนแอ')
+                            : '🔒 บารมีไม่ถึง';
+                        showToast(`${lockReason} — ลงทุนไม่ได้ แต่สนทนาและทำเควสต์ได้`, 'info', 4000);
+                        // Proceed to open modal (no return)
+                    } else {
+                        if (isHealthLocked) {
+                            if (currentHp < 10) showToast(`🏥 สุขภาพวิกฤต! ไม่สามารถเข้า "${loc.name}" ได้ — รีบไปรักษาตัวที่ ศาลาพระโอสถ ก่อน`, 'error', 5000);
+                            else showToast(`⚠️ ร่างกายอ่อนแอ! ต้องมี HP ≥ ${reqHealth} (ปัจจุบัน: ${currentHp})`, 'warning', 5000);
+                        } else {
+                            showToast(`ต้องมีบารมีอย่างน้อย ${loc.require_merit} จึงจะเข้าถึง ${loc.name} ได้ 🙏`, 'warning');
+                        }
+                        return;
+                    }
                 }
 
-                // ผ่าน Gate ทั้งหมด — เปิด modal
+                // NPC Header
                 document.getElementById('npc-name').innerText = npc.name;
                 document.getElementById('npc-role').innerText = npc.role;
                 document.getElementById('npc-avatar').innerHTML = `<i class="fas ${npcIcon} text-xl" style="color: var(--ayu-red);"></i>`;
@@ -1638,7 +1697,7 @@
                 if (npc.philosophy) { philEl.innerText = `"${npc.philosophy}"`; philEl.classList.remove('hidden'); }
                 else { philEl.classList.add('hidden'); }
 
-                // Invest panel description
+                // Invest panel description (CHANGE: บาท)
                 const hpCost = loc.hp_cost || 0;
                 const hpText = hpCost > 0 ? `+${hpCost} HP (ฟื้นฟู)` : `${hpCost} HP`;
                 let descText = loc.desc;
@@ -1692,10 +1751,22 @@
                     }
                 }
 
-                // Quest tab logic
+                // Quest tab
                 const activeQuest = this.state.active_quest ? this.data.quests[this.state.active_quest] : null;
                 const isQuestNpc = activeQuest && activeQuest.npc_id === npcId;
                 const questTabBtn = document.querySelector('.loc-tab-btn[data-tab="quest"]');
+                const investTabBtn = document.querySelector('.loc-tab-btn[data-tab="invest"]');
+
+                // NEW v4.0: disable invest tab if quest bypass with lock
+                if (investTabBtn) {
+                    if (isQuestBypass && (isHealthLocked || isMeritLocked)) {
+                        investTabBtn.style.opacity = '0.35';
+                        investTabBtn.style.pointerEvents = 'none';
+                    } else {
+                        investTabBtn.style.opacity = '';
+                        investTabBtn.style.pointerEvents = '';
+                    }
+                }
 
                 if (questTabBtn) {
                     if (isQuestNpc) {
@@ -1712,7 +1783,7 @@
                 this.updateModalCash();
             },
 
-            // --- Quest Tab Renderer ---
+            // NEW v4.0: Quest Eval State Persistence in renderQuestTab
             renderQuestTab: function (quest) {
                 const turnCount = this.state.quest_turn_count;
                 const minTurns = quest.min_turns;
@@ -1735,7 +1806,7 @@
                 const completeBtnEl = document.getElementById('quest-complete-btn-tab');
                 const evalResultEl = document.getElementById('quest-eval-result-tab');
 
-                // Persist eval result across tab switches
+                // NEW v4.0: Persist eval result across tab switches
                 if (this.questEvalPassed && this.questEvalData) {
                     evalResultEl.classList.remove('hidden');
                     evalResultEl.innerHTML = `
@@ -1757,24 +1828,23 @@
                 }
             },
 
-            // --- Modal Control ---
             closeModal: function (id) {
                 document.getElementById(id).classList.add('hidden');
                 if (id === 'modal-location') {
-                    // Cancel any ongoing stream
+                    // NEW v4.0: Cancel any ongoing stream
                     if (this._chatAbortController) {
                         this._chatAbortController.abort();
                         this._chatAbortController = null;
                     }
                     this.isSending = false;
 
-                    // Reset Horathibodi Mode — restore all tabs to default state
+                    // Restore invest tab
+                    const investTabBtn = document.querySelector('.loc-tab-btn[data-tab="invest"]');
+                    if (investTabBtn) { investTabBtn.style.opacity = ''; investTabBtn.style.pointerEvents = ''; }
+
+                    // Reset Horathibodi Mode
                     this.isHorathibodiMode = false;
-                    document.querySelectorAll('.loc-tab-btn').forEach(btn => {
-                        btn.classList.remove('hidden');
-                        btn.style.opacity = '';
-                        btn.style.pointerEvents = '';
-                    });
+                    document.querySelectorAll('.loc-tab-btn').forEach(btn => btn.classList.remove('hidden'));
                     document.getElementById('horathibodi-modal-chat-badge').classList.add('hidden');
                     document.getElementById('chat-input').disabled = false;
                     document.getElementById('chat-send-btn').disabled = false;
@@ -1784,19 +1854,13 @@
 
             openModal: function (id) { document.getElementById(id).classList.remove('hidden'); },
 
-            // --- Tab Switching ---
-            // No guard block: Hard Gate upstream means invest tab is always reachable
-            // if modal is open (user passed health + merit check to get here)
             switchLocationTab: function (tab) {
                 document.querySelectorAll('.loc-tab-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tab));
                 document.getElementById('panel-chat').classList.toggle('is-active', tab === 'chat');
                 document.getElementById('panel-invest').classList.toggle('is-active', tab === 'invest');
                 const questPanel = document.getElementById('panel-quest');
                 if (questPanel) questPanel.classList.toggle('is-active', tab === 'quest');
-                if (tab === 'chat') {
-                    const ch = document.getElementById('chat-history');
-                    setTimeout(() => { ch.scrollTop = ch.scrollHeight; }, 50);
-                }
+                if (tab === 'chat') { const ch = document.getElementById('chat-history'); setTimeout(() => { ch.scrollTop = ch.scrollHeight; }, 50); }
                 if (tab === 'invest') this.updateModalCash();
                 if (tab === 'quest' && questPanel) {
                     const aq = this.data.quests[this.state.active_quest];
@@ -1805,7 +1869,9 @@
             },
 
             // --- Chat System ---
+            // CHANGE: isSending guard + AbortController
             sendChat: async function () {
+                // NEW v4.0: isSending guard
                 if (this.isSending) return;
 
                 const input = document.getElementById('chat-input');
@@ -1836,6 +1902,7 @@
                 }
 
                 const s = this.state.stats;
+                // CHANGE: ไตรมาสที่, บาท, ข่าวเศรษฐกิจ
                 const context = `ไตรมาสที่: ${this.state.round}/${this.state.max_rounds} | ทรัพย์สิน: ${s.wealth.toLocaleString()} บาท | ปัญญา: ${s.wisdom} | บารมี: ${s.merit} | สุขภาพ: ${s.health} | ข่าวเศรษฐกิจ: ${document.getElementById('current-rumor').innerText}`;
 
                 const npcBubble = this.addChatBubble('npc', `
@@ -1844,6 +1911,7 @@
                     </div>`);
 
                 try {
+                    // NEW v4.0: AbortController
                     if (this._chatAbortController) this._chatAbortController.abort();
                     this._chatAbortController = new AbortController();
 
@@ -1894,6 +1962,7 @@
                     else { npcBubble.innerText = "(NPC ไม่สามารถตอบได้ในขณะนี้)"; }
                 } finally {
                     this.isSending = false;
+                    // Re-enable send button if modal still open and not at horathibodi limit
                     const sendBtnFinal = document.getElementById('chat-send-btn');
                     const modalStillOpen = !document.getElementById('modal-location').classList.contains('hidden');
                     if (sendBtnFinal && modalStillOpen) {
@@ -1904,6 +1973,7 @@
             },
 
             // --- Quest System ---
+            // CHANGE: reset questEvalPassed + questEvalData + auto-navigate
             acceptQuest: async function (questId) {
                 const quest = this.data.quests[questId];
                 if (quest) {
@@ -1923,6 +1993,7 @@
                         this.state.active_quest = data.active_quest;
                         this.state.quest_turn_count = 0;
                         this.state.quest_chat_history = [];
+                        // NEW v4.0: reset eval state
                         this.questEvalPassed = false;
                         this.questEvalData = null;
                         if (quest && quest.npc_id) this.chatHistories[quest.npc_id] = [];
@@ -1930,7 +2001,7 @@
                         this.renderMap();
                         this.closeModal('modal-quest-hub');
                         showToast(data.message, 'success', 5000);
-                        // Auto-navigate to quest NPC location (Hard Gate will handle locks)
+                        // NEW v4.0: auto-navigate to quest NPC location
                         if (quest && quest.location_id) {
                             setTimeout(() => { this.openLocation(quest.location_id); }, 600);
                         }
@@ -1940,6 +2011,7 @@
                 } catch (e) { showToast('เกิดข้อผิดพลาดในการรับเควสต์', 'error'); }
             },
 
+            // CHANGE: store questEvalPassed + questEvalData
             evaluateQuest: async function () {
                 if (!this.state.active_quest) return;
                 const evalBtn = document.getElementById('quest-eval-btn-tab');
@@ -1950,6 +2022,7 @@
                     const resultEl = document.getElementById('quest-eval-result-tab');
                     resultEl.classList.remove('hidden');
                     if (data.pass) {
+                        // NEW v4.0: persist eval result
                         this.questEvalPassed = true;
                         this.questEvalData = data;
                         resultEl.innerHTML = `
@@ -1973,6 +2046,7 @@
                 } catch (e) { showToast('เกิดข้อผิดพลาดในการประเมิน', 'error'); if (evalBtn) evalBtn.disabled = false; }
             },
 
+            // CHANGE: reset questEvalPassed + questEvalData
             completeQuest: async function () {
                 if (!this.state.active_quest) return;
                 try {
@@ -1984,6 +2058,7 @@
                         this.state.active_quest = null;
                         this.state.quest_chat_history = [];
                         this.state.quest_turn_count = 0;
+                        // NEW v4.0: reset eval state
                         this.questEvalPassed = false;
                         this.questEvalData = null;
                         this.updateStatsUI();
@@ -2046,31 +2121,15 @@
                 cashEl.style.color = remaining < 0 ? '#ef4444' : 'var(--ayu-brown)';
             },
 
-            // Fix B: closeModal ก่อน early return ทุกจุด — modal ไม่ติดค้างไม่ว่ากรณีใด
             confirmInvestment: function () {
                 const val = parseInt(document.getElementById('invest-amount').value) || 0;
                 const loc = this.data.locations[this.currentLocId];
                 const minInvest = loc.min_invest || 0;
-                const totalOther = Object.entries(this.currentInvestments)
-                    .filter(([k]) => k != this.currentLocId)
-                    .reduce((a, [, v]) => a + v, 0);
-
-                if (totalOther + val > this.state.stats.wealth) {
-                    this.closeModal('modal-location');
-                    showToast('เงินไม่พอ! กรุณาลดจำนวนเงินลงทุน', 'error');
-                    return;
-                }
-                if (val > 0 && val < minInvest) {
-                    this.closeModal('modal-location');
-                    showToast(`${loc.name} ต้องลงทุนขั้นต่ำ ${minInvest.toLocaleString()} บาท`, 'warning');
-                    return;
-                }
-                if ((loc.require_merit || 0) > 0 && this.state.stats.merit < loc.require_merit) {
-                    this.closeModal('modal-location');
-                    showToast(`ต้องมีบารมีอย่างน้อย ${loc.require_merit} จึงจะลงทุนที่ ${loc.name} ได้ 🙏`, 'warning');
-                    return;
-                }
-
+                const totalOther = Object.entries(this.currentInvestments).filter(([k]) => k != this.currentLocId).reduce((a, [, v]) => a + v, 0);
+                if (totalOther + val > this.state.stats.wealth) { showToast('เงินไม่พอ! กรุณาลดจำนวนเงินลงทุน', 'error'); return; }
+                // CHANGE: บาท
+                if (val > 0 && val < minInvest) { showToast(`${loc.name} ต้องลงทุนขั้นต่ำ ${minInvest.toLocaleString()} บาท`, 'warning'); return; }
+                if ((loc.require_merit || 0) > 0 && this.state.stats.merit < loc.require_merit) { showToast(`ต้องมีบารมีอย่างน้อย ${loc.require_merit} จึงจะลงทุนที่ ${loc.name} ได้ 🙏`, 'warning'); return; }
                 if (val === 0) delete this.currentInvestments[this.currentLocId];
                 else this.currentInvestments[this.currentLocId] = val;
                 this.closeModal('modal-location');
@@ -2080,31 +2139,33 @@
             resetTurn: function () { this.currentInvestments = {}; this.renderMap(); this.updateFooterStats(); },
 
             calculateTotalHpCost: function () {
-                return Object.entries(this.currentInvestments)
-                    .filter(([, a]) => a > 0)
-                    .reduce((total, [id]) => { const loc = this.data.locations[id]; return total + (loc?.hp_cost || 0); }, 0);
+                return Object.entries(this.currentInvestments).filter(([, a]) => a > 0).reduce((total, [id]) => {
+                    const loc = this.data.locations[id];
+                    return total + (loc?.hp_cost || 0);
+                }, 0);
             },
 
+            // CHANGE: บาท
             updateFooterStats: function () {
                 const total = Object.values(this.currentInvestments).reduce((a, b) => a + b, 0);
                 const remain = this.state.stats.wealth - total;
                 const hpCost = this.calculateTotalHpCost();
                 document.getElementById('invested-total-display').innerText = `ลงทุนไปแล้ว: ${total.toLocaleString()} บาท`;
                 document.getElementById('cash-remaining-display').innerText = `เงินสดคงเหลือ: ${remain.toLocaleString()}`;
+                const hpEl = document.getElementById('hp-cost-display');
+                hpEl.innerText = `❤️ เสียสุขภาพ: ${hpCost >= 0 ? '+' : ''}${hpCost}`;
                 document.getElementById('invested-total-display-m').innerText = `ลงทุน: ${total.toLocaleString()}`;
                 document.getElementById('cash-remaining-display-m').innerText = `คงเหลือ: ${remain.toLocaleString()}`;
-                const hpEl = document.getElementById('hp-cost-display');
-                const hpElM = document.getElementById('hp-cost-display-m');
-                hpEl.innerText = `❤️ เสียสุขภาพ: ${hpCost >= 0 ? '+' : ''}${hpCost}`;
-                hpElM.innerText = `❤️ ${hpCost >= 0 ? '+' : ''}${hpCost}`;
+                document.getElementById('hp-cost-display-m').innerText = `❤️ ${hpCost >= 0 ? '+' : ''}${hpCost}`;
                 let colorClass = 'text-red-300';
                 if (hpCost > 0) colorClass = 'text-green-300';
                 else if (hpCost <= -15) colorClass = 'text-red-400 font-bold';
                 else if (hpCost === 0) colorClass = 'text-yellow-200 opacity-50';
                 hpEl.className = colorClass;
-                hpElM.className = colorClass + ' truncate';
+                document.getElementById('hp-cost-display-m').className = colorClass + ' truncate';
             },
 
+            // CHANGE: new item icons for Beyond the Realm
             updateItemIcons: function () {
                 const items = this.state.stats.items || [];
                 const iconMap = {
@@ -2148,6 +2209,7 @@
                 }
             },
 
+            // CHANGE: ไตรมาส text
             updateEndTurnButton: function () {
                 const btn = document.querySelector('button[onclick="game.endTurn()"]');
                 if (!btn) return;
@@ -2156,16 +2218,13 @@
                 const isLocked = currentWisdom < requiredWisdom;
                 const questBtn = document.getElementById('btn-quest-hub');
                 if (isLocked) {
-                    btn.disabled = true;
-                    btn.style.opacity = '0.55';
-                    btn.style.cursor = 'not-allowed';
+                    btn.disabled = true; btn.style.opacity = '0.55'; btn.style.cursor = 'not-allowed';
                     btn.innerHTML = `<i class="fas fa-lock mr-1"></i>ต้องการปัญญา ${requiredWisdom}`;
                     btn.title = `ต้องการปัญญา ${requiredWisdom} — รับเควสต์และสนทนากับ NPC เพื่อเพิ่มปัญญา`;
                     if (questBtn) questBtn.classList.add('pulse-attention');
                 } else {
-                    btn.disabled = false;
-                    btn.style.opacity = '1';
-                    btn.style.cursor = '';
+                    btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = '';
+                    // CHANGE: สิ้นไตรมาส
                     btn.innerHTML = 'สิ้นไตรมาส (รับผลตอบแทน) <i class="fas fa-chevron-circle-right ml-2"></i>';
                     btn.title = '';
                     if (questBtn) questBtn.classList.remove('pulse-attention');
@@ -2173,6 +2232,7 @@
                 this.updateWisdomGateHint(currentWisdom, requiredWisdom, isLocked);
             },
 
+            // CHANGE: สิ้นไตรมาส
             updateWisdomGateHint: function (currentWisdom, requiredWisdom, isLocked) {
                 const hintEl = document.getElementById('wisdom-gate-hint');
                 if (!hintEl) return;
@@ -2183,12 +2243,12 @@
                 } else { hintEl.classList.add('hidden'); }
             },
 
-            // --- Turn Processing ---
             endTurn: async function () {
                 if (this.isProcessing) return;
                 const requiredWisdom = this.data.wisdomGate[this.state.round - 1] || 0;
                 if (this.state.stats.wisdom < requiredWisdom) {
                     const needed = requiredWisdom - this.state.stats.wisdom;
+                    // CHANGE: สิ้นไตรมาส
                     showToast(`ต้องเพิ่มปัญญาอีก ${needed} — รับเควสต์และสนทนากับ NPC ก่อนสิ้นไตรมาส 📜`, 'warning', 5000);
                     return;
                 }
@@ -2302,6 +2362,7 @@
                 }
 
                 const nextBtn = document.querySelector('#modal-result button');
+                // CHANGE: ก้าวสู่ไตรมาสถัดไป
                 nextBtn.innerHTML = result.is_game_over
                     ? 'ดูสรุปผลการลงทุน <i class="fas fa-scroll ml-2"></i>'
                     : 'ก้าวสู่ไตรมาสถัดไป <i class="fas fa-arrow-right ml-2"></i>';
@@ -2313,6 +2374,7 @@
                 revealSteps.forEach((el, i) => { setTimeout(() => el.classList.add('is-visible'), 100 + i * 300); });
             },
 
+            // CHANGE: ไตรมาสถัดไป + reset horathibodi
             nextRound: function () {
                 document.getElementById('modal-result').classList.add('hidden');
                 if (this._lastResult?.is_game_over) {
@@ -2323,6 +2385,7 @@
                     this.state.horathibodi_chat_count = 0;
                     this.updateHorathibodiChatLimitUI();
                     this.updateItemIcons();
+                    // CHANGE: ไตรมาสที่
                     document.getElementById('round-display').innerText = this.state.round;
                     this.updateStatsUI();
                     this.updateFooterStats();
@@ -2364,6 +2427,7 @@
                 document.getElementById('end-merit').innerText = s.merit;
                 document.getElementById('end-health').innerText = s.health;
 
+                // Quest summary — CHANGE: new item icons
                 const iconMap = {
                     'Fact Sheet ทองคำ': '📊', 'ดาบ Sector Fund': '⚔️',
                     'ข้าวทิพย์ DCA': '🌾', 'ยาหอมนักลงทุน': '🌿', 'กองทุนฉุกเฉิน': '🏦',
